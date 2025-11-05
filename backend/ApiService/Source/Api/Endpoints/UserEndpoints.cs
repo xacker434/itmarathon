@@ -76,6 +76,15 @@ namespace Epam.ItMarathon.ApiService.Api.Endpoints
             return application;
         }
 
+
+        /// <summary>
+        /// Delete User logic.
+        /// </summary>
+        /// <param name="id">Unique identifier of the User.</param>
+        /// <param name="userCode">User authorization code.</param>
+        /// <param name="mediator">Implementation of <see cref="IMediator"/> for handling business logic.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/> that can be used to cancel operation.</param>
+        /// <returns>Returns <seealso cref="IResult"/> depending on operation result.</returns>
         private static async Task<IResult> DeleteUserWithId([FromRoute] ulong id, [FromQuery, Required] string? userCode,
             IMediator mediator, CancellationToken cancellationToken)
         {

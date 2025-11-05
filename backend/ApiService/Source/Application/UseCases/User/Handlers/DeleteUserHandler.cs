@@ -29,7 +29,7 @@ namespace Epam.ItMarathon.ApiService.Application.UseCases.User.Handlers
 
             // 2. Delete user by id in room's users - room.DeleteUser(userId)
             var room = roomResult.Value;
-            var deleteResult = room.DeleteUser(request.UserId);
+            var deleteResult = room.DeleteUser(request.UserId, request.UserCode);
             if (deleteResult.IsFailure)
             {
                 return deleteResult;
