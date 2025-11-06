@@ -328,6 +328,12 @@ namespace Epam.ItMarathon.ApiService.Domain.Aggregate.Room
             return ValidateProperty(char.ToLowerInvariant(propertyName[0]) + propertyName[1..]);
         }
 
+        /// <summary>
+        /// Method to delete User from the Room by userID.
+        /// </summary>
+        /// <param name="userId">Id of the User to be deleted.</param>
+        /// <param name="UserCode">Authentication code of the User performing the deletion.</param>
+        /// <returns>Returns <see cref="Room"/> encapsulated in <see cref="Result"/>.</returns>
         public Result<Room, ValidationResult> DeleteUser(ulong? userId, string UserCode)
         {
             // 6. Check Room is not closed
