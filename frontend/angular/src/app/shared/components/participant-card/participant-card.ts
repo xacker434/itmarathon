@@ -21,6 +21,7 @@ import { PopupService } from '../../../core/services/popup';
 import { copyToClipboard } from '../../../utils/copy';
 import { UrlService } from '../../../core/services/url';
 import { ParticipantInfoModal } from '../../../room/components/participant-info-modal/participant-info-modal';
+import { DeleteParticipantModal } from '../../../room/components/delete-participant-modal/delete-participant-modal';
 import { ModalService } from '../../../core/services/modal';
 import { getPersonalInfo } from '../../../utils/get-personal-info';
 import { UserService } from '../../../room/services/user';
@@ -58,6 +59,9 @@ export class ParticipantCard {
   public readonly ariaLabelCopy = AriaLabel.ParticipantLink;
   public readonly iconInfo = IconName.Info;
   public readonly ariaLabelInfo = AriaLabel.Info;
+
+  public readonly iconDelete = IconName.Delete;
+  public readonly ariaLabelDelete = AriaLabel.DeleteParticipant;
 
   @HostBinding('tabindex') tab = 0;
   @HostBinding('class.list-row') rowClass = true;
@@ -166,5 +170,50 @@ export class ParticipantCard {
       },
       true
     );
+  }
+
+  public onDeleteClick(): void {
+    console.log('ParticipantCard.onDeleteClick', this.participant()?.id);
+    if (!this.isCurrentUserAdmin()) {
+      console.log('not admin, abort');
+      return;
+    }
+    this.#openModalDelete();
+  }
+
+  #openModalDelete(): void {
+    const p = this.participant();
+    const id = p.id;
+    const code = this.userCode();
+
+    try {
+      this.#modalService.openWithResult(
+        DeleteParticipantModal,
+        { personalInfo: getPersonalInfo(p) ? [...getPersonalInfo(p)] : [] },
+        {
+          deleteButtonAction: () => {
+            console.log('confirm delete ->', id);
+            this.#userService.deleteUser(id, code).subscribe({
+              next: (res) => {
+                console.log('deleteUser result', res);
+                this.#modalService.close();
+                // Оновлюємо список користувачів після видалення
+                this.#userService.getUsers().subscribe();
+              },
+              error: (err) => {
+                console.error('deleteUser error', err);
+                // toast-повідомлення про помилку вже обробляється в interceptor/userService
+                this.#modalService.close();
+              },
+            });
+          },
+          cancelButtonAction: () => {
+            this.#modalService.close();
+          },
+        }
+      );
+    } catch (err) {
+      console.error('open modal error', err);
+    }
   }
 }

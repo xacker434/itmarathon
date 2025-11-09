@@ -1,0 +1,78 @@
+.delete-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  padding: 20px;
+}
+
+.delete-modal {
+  background: #ffffff;
+  color: #0f1720;
+  width: 100%;
+  max-width: 540px;
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.delete-modal__header {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.delete-modal__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.delete-modal__body {
+  padding: 16px 24px;
+}
+.delete-modal__confirm-text {
+  margin: 0 0 12px 0;
+  color: #1f2937;
+}
+
+.delete-modal__personal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.delete-modal__personal-item {
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.04);
+}
+
+.delete-modal__footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 14px 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.btn {
+  min-width: 88px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+.btn-secondary {
+  background: transparent;
+  color: #374151;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+.btn-danger {
+  background: #2f855a;
+  color: #fff;
+}

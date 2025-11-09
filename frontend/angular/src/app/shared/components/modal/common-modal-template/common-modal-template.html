@@ -10,9 +10,11 @@
       tabindex="0"
     >
       <header class="modal__header">
-        <svg class="modal__picture" aria-hidden="true">
-          <use [attr.href]="headerPictureHref()" />
-        </svg>
+        @if (headerPictureName()) {
+          <svg class="modal__picture" aria-hidden="true">
+            <use [attr.href]="headerPictureHref()" />
+          </svg>
+        }
 
         <div class="modal__header-text">
           <h3 class="modal__title">{{ headerTitle() }}</h3>

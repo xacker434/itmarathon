@@ -1,0 +1,10 @@
+<app-common-modal-template
+  [headerTitle]="title"
+  [subtitle]="subtitle()"
+  [buttonText]="buttonDeleteText"
+  [cancelButtonText]="buttonCancelText"
+  (buttonAction)="onDeleteButtonClick()"
+  (cancelButtonAction)="onCancelButtonClick()"
+  (closeModal)="onCancelButtonClick()"
+>
+</app-common-modal-template>
