@@ -36,10 +36,13 @@
   }
 
   @if (isCurrentUserAdmin() && !participant().isAdmin) {
-    <app-icon-button
-      [iconName]="iconDelete"
-      [ariaLabel]="ariaLabelDelete"
+    <button
+      type="button"
+      class="participant-card__delete-btn"
+      aria-label="Delete Participant"
       (click)="onDeleteClick()"
-    />
+    >
+      <span nz-icon nzType="delete" nzTheme="outline"></span>
+    </button>
   }
 </span>

@@ -7,6 +7,7 @@ import {
   input,
 } from '@angular/core';
 import { tap } from 'rxjs';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { IconButton } from '../icon-button/icon-button';
 import {
@@ -29,7 +30,7 @@ import type { User } from '../../../app.models';
 
 @Component({
   selector: 'li[app-participant-card]',
-  imports: [IconButton],
+  imports: [IconButton, NzIconModule],
   templateUrl: './participant-card.html',
   styleUrl: './participant-card.scss',
 })
@@ -59,9 +60,6 @@ export class ParticipantCard {
   public readonly ariaLabelCopy = AriaLabel.ParticipantLink;
   public readonly iconInfo = IconName.Info;
   public readonly ariaLabelInfo = AriaLabel.Info;
-
-  public readonly iconDelete = IconName.Delete;
-  public readonly ariaLabelDelete = AriaLabel.DeleteParticipant;
 
   @HostBinding('tabindex') tab = 0;
   @HostBinding('class.list-row') rowClass = true;
@@ -197,12 +195,10 @@ export class ParticipantCard {
               next: (res) => {
                 console.log('deleteUser result', res);
                 this.#modalService.close();
-                // Оновлюємо список користувачів після видалення
                 this.#userService.getUsers().subscribe();
               },
               error: (err) => {
                 console.error('deleteUser error', err);
-                // toast-повідомлення про помилку вже обробляється в interceptor/userService
                 this.#modalService.close();
               },
             });

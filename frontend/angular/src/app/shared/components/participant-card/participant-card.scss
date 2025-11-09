@@ -28,7 +28,7 @@
     }
   }
 
-  app-icon-button:not(:first-child) {
+  app-icon-button:not(:first-child).participant-card__delete-btn {
     position: relative;
     &::before {
       content: '';
@@ -39,6 +39,44 @@
       width: 1px;
       height: 40px;
       background-color: $pl-li-divider-color;
+    }
+  }
+
+  .participant-card__delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: $icon-button-bg--primary;
+    transition: all 0.3s;
+    padding: 0;
+    border-radius: 2px;
+
+    span[nz-icon] {
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: $icon-button-bg--primary-hover;
+    }
+
+    &:focus-visible {
+      outline: 1px solid $icon-button-outline;
+    }
+
+    &:active {
+      color: $icon-button-bg--primary-active;
+    }
+
+    &:disabled {
+      color: $icon-button-bg--disabled;
+      cursor: not-allowed;
     }
   }
 }
