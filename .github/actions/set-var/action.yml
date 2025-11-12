@@ -77,7 +77,7 @@ runs:
         echo "INSTANCE_NAME=react" >> $GITHUB_ENV
         echo "CONTEXT=frontend/react" >> $GITHUB_ENV
         echo "DOCKERFILE=frontend/react/Dockerfile" >> $GITHUB_ENV
-        echo "REPO=${{ inputs.docker_hub_username }}/react" >> $GITHUB_ENV
+        echo "REPO=${{ inputs.docker_hub_username }}/itmarathon-front-react" >> $GITHUB_ENV
         
         echo "Updating BASE_API_URL in React project"
         jq --arg url "$BASE_API_URL" '.environment.backendApiUrl = $url' frontend/react/config.json > tmp.config.json && mv tmp.config.json frontend/react/config.json
@@ -92,7 +92,7 @@ runs:
         echo "INSTANCE_NAME=angular" >> $GITHUB_ENV
         echo "CONTEXT=frontend/angular" >> $GITHUB_ENV
         echo "DOCKERFILE=frontend/angular/Dockerfile" >> $GITHUB_ENV
-        echo "REPO=${{ inputs.docker_hub_username }}/angular" >> $GITHUB_ENV
+        echo "REPO=${{ inputs.docker_hub_username }}/itmarathon-front-angular" >> $GITHUB_ENV
 
         echo "Updating BASE_API_URL in Angular project"
         jq --arg url "$BASE_API_URL" '.environment.backendApiUrl = $url' frontend/angular/config.json > tmp.config.json && mv tmp.config.json frontend/angular/config.json
@@ -108,7 +108,7 @@ runs:
         echo "INSTANCE_NAME=dotnet" >> $GITHUB_ENV
         echo "CONTEXT=backend/ApiService" >> $GITHUB_ENV
         echo "DOCKERFILE=backend/ApiService/Dockerfile" >> $GITHUB_ENV
-        echo "REPO=${{ inputs.docker_hub_username }}/dotnet" >> $GITHUB_ENV
+        echo "REPO=${{ inputs.docker_hub_username }}/itmarathon-backend" >> $GITHUB_ENV
     
     - name: Set Grafana Environment
       if: ${{ inputs.microservice == 'grafana' }}
