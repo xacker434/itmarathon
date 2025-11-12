@@ -17,6 +17,9 @@ import { httpHeadersInterceptor } from './core/services/interceptors/http-header
 import { loaderInterceptor } from './core/services/interceptors/loader-interceptor';
 import { errorHandlingInterceptor } from './core/services/interceptors/error-handling-interceptor';
 
+import { provideNzIcons } from 'ng-zorro-antd/icon';
+import { DeleteOutline } from '@ant-design/icons-angular/icons';
+
 registerLocaleData(en);
 
 export const appConfig: ApplicationConfig = {

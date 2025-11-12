@@ -7,6 +7,7 @@ import {
   input,
 } from '@angular/core';
 import { tap } from 'rxjs';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { IconButton } from '../icon-button/icon-button';
 import {
@@ -21,6 +22,7 @@ import { PopupService } from '../../../core/services/popup';
 import { copyToClipboard } from '../../../utils/copy';
 import { UrlService } from '../../../core/services/url';
 import { ParticipantInfoModal } from '../../../room/components/participant-info-modal/participant-info-modal';
+import { DeleteParticipantModal } from '../../../room/components/delete-participant-modal/delete-participant-modal';
 import { ModalService } from '../../../core/services/modal';
 import { getPersonalInfo } from '../../../utils/get-personal-info';
 import { UserService } from '../../../room/services/user';
@@ -28,7 +30,7 @@ import type { User } from '../../../app.models';
 
 @Component({
   selector: 'li[app-participant-card]',
-  imports: [IconButton],
+  imports: [IconButton, NzIconModule],
   templateUrl: './participant-card.html',
   styleUrl: './participant-card.scss',
 })
@@ -166,5 +168,48 @@ export class ParticipantCard {
       },
       true
     );
+  }
+
+  public onDeleteClick(): void {
+    console.log('ParticipantCard.onDeleteClick', this.participant()?.id);
+    if (!this.isCurrentUserAdmin()) {
+      console.log('not admin, abort');
+      return;
+    }
+    this.#openModalDelete();
+  }
+
+  #openModalDelete(): void {
+    const p = this.participant();
+    const id = p.id;
+    const code = this.userCode();
+
+    try {
+      this.#modalService.openWithResult(
+        DeleteParticipantModal,
+        { personalInfo: getPersonalInfo(p) ? [...getPersonalInfo(p)] : [] },
+        {
+          deleteButtonAction: () => {
+            console.log('confirm delete ->', id);
+            this.#userService.deleteUser(id, code).subscribe({
+              next: (res) => {
+                console.log('deleteUser result', res);
+                this.#modalService.close();
+                this.#userService.getUsers().subscribe();
+              },
+              error: (err) => {
+                console.error('deleteUser error', err);
+                this.#modalService.close();
+              },
+            });
+          },
+          cancelButtonAction: () => {
+            this.#modalService.close();
+          },
+        }
+      );
+    } catch (err) {
+      console.error('open modal error', err);
+    }
   }
 }

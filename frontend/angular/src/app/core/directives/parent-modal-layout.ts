@@ -12,7 +12,7 @@ import { ModalService } from '../services/modal';
 
 @Directive()
 export class ParentModalLayout {
-  readonly headerPictureName = input.required<PictureName>();
+  readonly headerPictureName = input<PictureName>();
   readonly headerTitle = input.required<ModalTitle>();
   readonly buttonText = input.required<ButtonText>();
 

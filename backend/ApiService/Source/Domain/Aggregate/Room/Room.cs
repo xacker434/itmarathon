@@ -328,6 +328,60 @@ namespace Epam.ItMarathon.ApiService.Domain.Aggregate.Room
             return ValidateProperty(char.ToLowerInvariant(propertyName[0]) + propertyName[1..]);
         }
 
+        /// <summary>
+        /// Method to delete User from the Room by userID.
+        /// </summary>
+        /// <param name="userId">Id of the User to be deleted.</param>
+        /// <param name="UserCode">Authentication code of the User performing the deletion.</param>
+        /// <returns>Returns <see cref="Room"/> encapsulated in <see cref="Result"/>.</returns>
+        public Result<Room, ValidationResult> DeleteUser(ulong? userId, string UserCode)
+        {
+            // 6. Check Room is not closed
+            var roomCanBeModifiedResult = CheckRoomCanBeModified();
+            if (roomCanBeModifiedResult.IsFailure)
+            {
+                return Result.Failure<Room, ValidationResult>(roomCanBeModifiedResult.Error);
+            }
+
+            // 1. Користувача з `id` не знайдено​
+            // 4. Користувач з 'id' та 'UserCode' належать до різних кімнат​
+            var userToDelete = Users.FirstOrDefault(user => user.Id == userId);
+            if (userToDelete is null)
+            {
+                return Result.Failure<Room, ValidationResult>(new NotFoundError([
+                    new ValidationFailure("userId", "User with specified Id was not found in the room.")
+                ]));
+            }
+
+            // 2. Користувач з `UserCode` не знайдено​
+            var authUser = Users.FirstOrDefault(user => user.AuthCode == UserCode);
+            if (authUser is null)
+            {
+                return Result.Failure<Room, ValidationResult>(new NotFoundError([
+                    new ValidationFailure("UserCode", "User with specified UserCode was not found in the room.")
+                ]));
+            }
+
+            // 3. Користувач з `UserCode` не є адміністратором кімнати​
+            if (!authUser.IsAdmin)
+            {
+                return Result.Failure<Room, ValidationResult>(new NotAuthorizedError([
+                    new ValidationFailure("UserCode", "User with specified UserCode is not authorized to delete users.")
+                ]));
+            }
+
+            // 5. Користувач з 'id' та 'UserCode' це одна і та сама особа​
+            if (userToDelete.Id == authUser.Id)
+            {
+                return Result.Failure<Room, ValidationResult>(new BadRequestError([
+                    new ValidationFailure("userId", "Admin user cannot delete themselves from the room.")
+                ]));
+            }
+
+            Users.Remove(userToDelete);
+            return this;
+        }
+
         private Result<Room, ValidationResult> ValidateProperty(string propertyName)
         {
             var validationResult = new RoomValidator().Validate(this,

@@ -34,4 +34,15 @@
       (click)="onInfoClick()"
     />
   }
+
+  @if (isCurrentUserAdmin() && !participant().isAdmin) {
+    <button
+      type="button"
+      class="participant-card__delete-btn"
+      aria-label="Delete Participant"
+      (click)="onDeleteClick()"
+    >
+      <span nz-icon nzType="delete" nzTheme="outline"></span>
+    </button>
+  }
 </span>
